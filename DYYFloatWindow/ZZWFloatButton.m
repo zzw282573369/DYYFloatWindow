@@ -1,12 +1,12 @@
 //
-//  DYYFloatWindow.m
-//  testTab
+//  ZZWFloatButton.m
+//  Demo
 //
-//  Created by 杜阳阳 on 16/7/29.
-//  Copyright © 2016年 杜阳阳. All rights reserved.
+//  Created by CubeaceMacMini on 2020/9/16.
+//  Copyright © 2020 dyy. All rights reserved.
 //
 
-#import "DYYFloatWindow.h"
+#import "ZZWFloatButton.h"
 #import "ChildButton.h"
 
 #define WIDTH self.frame.size.width
@@ -24,7 +24,7 @@
 
 #define WZFlashInnerCircleInitialRaius  20
 
-@interface DYYFloatWindow()
+@interface ZZWFloatButton()
 
 @property(nonatomic)NSInteger frameWidth;
 @property(nonatomic)BOOL  isShowTab;
@@ -38,9 +38,11 @@
 @property(nonatomic,strong)CAShapeLayer *circleShape;
 @property(nonatomic,strong)UIColor *animationColor;
 
+@property (strong, nonatomic) UIWindow * mainWindow;
+
 @end
 
-@implementation DYYFloatWindow
+@implementation ZZWFloatButton
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -50,11 +52,11 @@
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame mainImageName:(NSString*)name imagesAndTitle:(NSDictionary*)imagesAndTitle bgcolor:(UIColor *)bgcolor{
-    return  [self initWithFrame:frame mainImageName:name imagesAndTitle:imagesAndTitle bgcolor:bgcolor animationColor:nil];
-}
+//- (instancetype)initWithFrame:(CGRect)frame mainImageName:(NSString*)name imagesAndTitle:(NSDictionary*)imagesAndTitle bgcolor:(UIColor *)bgcolor{
+//    return  [self initWithFrame:frame mainImageName:name imagesAndTitle:imagesAndTitle bgcolor:bgcolor animationColor:nil];
+//}
 
-- (instancetype)initWithFrame:(CGRect)frame mainImageName:(NSString *)mainImageName imagesAndTitle:(NSDictionary*)imagesAndTitle bgcolor:(UIColor *)bgcolor animationColor:animationColor
+- (instancetype)initWithFrame:(CGRect)frame mainImageName:(NSString *)mainImageName imagesAndTitle:(NSDictionary*)imagesAndTitle bgcolor:(UIColor *)bgcolor animationColor:animationColor addWindow:(UIWindow *)window
 {
     if(self = [super initWithFrame:frame])
     {
@@ -64,15 +66,20 @@
         _isShowTab = FALSE;
         
         self.backgroundColor = [UIColor clearColor];
-        self.windowLevel = UIWindowLevelAlert + 1;  //如果想在 alert 之上，则改成 + 2
-        self.rootViewController = [UIViewController new];
-        [self makeKeyAndVisible];
+//        self.windowLevel = UIWindowLevelAlert + 1;  //如果想在 alert 之上，则改成 + 2
+//        self.rootViewController = [UIViewController new];
+//        [self makeKeyAndVisible];
         
         _bgcolor = bgcolor;
         _frameWidth = frame.size.width;
         _imagesAndTitle = imagesAndTitle;
         _animationColor = animationColor;
         
+        self.mainWindow = window;
+        
+        [window addSubview:self];
+        //让悬浮按钮在最上层(即便以后还有keywindow add subView，也会在 floatBtn下)
+        [window bringSubviewToFront:self];
         
         _contentView = [[UIView alloc] initWithFrame:CGRectMake(_frameWidth + 5, 0, imagesAndTitle.count * (_frameWidth + marginWith), _frameWidth)];
         _contentView.backgroundColor = [UIColor greenColor];
@@ -89,6 +96,8 @@
         }
         
         [self addSubview:_mainImageButton];
+        
+        
         
         //添加按钮
         [self setButtons];
@@ -492,6 +501,5 @@
         [self click:nil];
     }
 }
-
 
 @end
